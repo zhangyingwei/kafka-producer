@@ -6,6 +6,6 @@ import kafka.producer.KeyedMessage;
 public class ProducerPoolTest {
 	public static void main(String[] args) {
 		ProducerExecuter executer = new ProducerExecuter(ProducerPool.getIS());
-		executer.send(new KeyedMessage("test",null,"这里是kafka-producer"));
+		executer.send(new KeyedMessage("test",null,"这里是kafka-producer-哈哈"));
 	} 
 }

@@ -2,25 +2,39 @@ package com.zhangyw.kafka.producer.server;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
+import kafka.producer.KeyedMessage;
+
+import com.zhangyw.kafka.producer.client.ProducerExecuter;
+import com.zhangyw.kafka.producer.client.ProducerPool;
 import com.zhangyw.kafka.producer.exception.KPSException;
 import com.zhangyw.kafka.producer.server.impl.IKPServer;
 
-public class KPServer implements IKPServer{
-
-	public void start() throws KPSException {
-		// TODO Auto-generated method stub
+public class KPServer extends Thread implements IKPServer{
+	
+	Logger logger = Logger.getLogger(KPServer.class);
+	
+	private ProducerExecuter executer = null;
+	
+	public KPServer(){
+		this.executer = new ProducerExecuter(ProducerPool.getIS());
 	}
 
 	public void send(String topic, String message) throws KPSException {
-		// TODO Auto-generated method stub
+		this.executer.send(new KeyedMessage(topic, message));
+		logger.info("topic:"+topic+"-message:"+message);
 	}
 
 	public void send(List<String> topics, String message) throws KPSException {
-		// TODO Auto-generated method stub
+		for(String topic:topics){
+			this.executer.send(new KeyedMessage(topic, message));
+		}
 	}
 
 	public void send(String topic, List<String> messages) throws KPSException {
-		// TODO Auto-generated method stub
+		for(String message:messages){
+			this.executer.send(new KeyedMessage(topic, message));
+		}
 	}
-	
 }
