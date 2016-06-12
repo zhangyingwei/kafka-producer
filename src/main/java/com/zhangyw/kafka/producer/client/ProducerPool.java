@@ -24,8 +24,6 @@ public class ProducerPool {
 		conf = new Properties();
 		this.waitPool = new ArrayList<Producer>();
 		this.wokePool = new ArrayList<Producer>();
-		this.initConf();
-		this.initPool();
 	}
 	private static class ProducerPoolHandler{
 		private static ProducerPool pool = new ProducerPool();
@@ -43,6 +41,7 @@ public class ProducerPool {
 		this.reInitSize = conf.getProperty("reInitSize")==null?this.reInitSize:Integer.parseInt(conf.getProperty("reInitSize"));
 		this.clientConf = PropertiesUtil.getIS().load(conf.getProperty("producer.conf")).getProp();
 		this.client.initConf(clientConf);
+		this.initPool();
 	}
 	@SuppressWarnings("rawtypes")
 	public synchronized Producer getProducer(){

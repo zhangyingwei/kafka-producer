@@ -20,6 +20,11 @@ public class KPServer extends Thread implements IKPServer{
 	public KPServer(){
 		this.executer = new ProducerExecuter(ProducerPool.getIS());
 	}
+	public KPServer(String configPath){
+		ProducerPool pool = ProducerPool.getIS();
+		pool.initConf(configPath);
+		this.executer = new ProducerExecuter(pool);
+	}
 
 	public void send(String topic, String message) throws KPSException {
 		this.executer.send(new KeyedMessage(topic, message));
