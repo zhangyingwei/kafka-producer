@@ -1,6 +1,7 @@
 package com.zhangyw.kafka.producer.server;
 
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
@@ -23,6 +24,11 @@ public class KPServer extends Thread implements IKPServer{
 	public KPServer(String configPath){
 		ProducerPool pool = ProducerPool.getIS();
 		pool.initConf(configPath);
+		this.executer = new ProducerExecuter(pool);
+	}
+	public KPServer(Properties properties){
+		ProducerPool pool = ProducerPool.getIS();
+		pool.initConf(properties);
 		this.executer = new ProducerExecuter(pool);
 	}
 

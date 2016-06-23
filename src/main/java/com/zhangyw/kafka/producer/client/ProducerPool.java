@@ -31,16 +31,37 @@ public class ProducerPool {
 	public static ProducerPool getIS(){
 		return ProducerPoolHandler.pool;
 	}
-	public void initConf(){
-		String confPath = System.getProperty("user.dir")+"\\src\\main\\resources\\conf.properties";
-		this.initConf(confPath);
-	}
+//	public void initConf(){
+//		String confPath = System.getProperty("user.dir")+"\\src\\main\\resources\\conf.properties";
+//		this.initConf(confPath);
+//	}
 	public void initConf(String path){
 		this.conf = PropertiesUtil.getIS().load(path).getProp();
-		this.InitSize = conf.getProperty("InitSize")==null?this.InitSize:Integer.parseInt(conf.getProperty("InitSize"));
-		this.reInitSize = conf.getProperty("reInitSize")==null?this.reInitSize:Integer.parseInt(conf.getProperty("reInitSize"));
-		this.clientConf = PropertiesUtil.getIS().load(conf.getProperty("producer.conf")).getProp();
-		this.client.initConf(clientConf);
+		Properties pool = new Properties();
+		Properties producer = new Properties();
+		this.InitSize = conf.getProperty("pool.initsize")==null?this.InitSize:Integer.parseInt(conf.getProperty("pool.initsize"));
+		this.reInitSize = conf.getProperty("pool.reinitsize")==null?this.reInitSize:Integer.parseInt(conf.getProperty("pool.reinitsize"));
+		
+		for(Object key:conf.keySet()){
+			if(key.toString().startsWith("producer.")){
+				producer.put(key.toString().replace("producer.", ""), conf.get(key));
+			}
+		}
+		this.client.initConf(producer);
+		this.initPool();
+	}
+	public void initConf(Properties properties){
+		this.conf = properties;
+		Properties producer = new Properties();
+		this.InitSize = conf.getProperty("pool.initsize")==null?this.InitSize:Integer.parseInt(conf.getProperty("pool.initsize"));
+		this.reInitSize = conf.getProperty("pool.reinitsize")==null?this.reInitSize:Integer.parseInt(conf.getProperty("pool.reInitsize"));
+		for(Object key:conf.keySet()){
+			if(key.toString().startsWith("producer.")){
+				producer.put(key.toString().replace("producer.", ""), conf.get(key));
+			}
+		}
+//		this.clientConf = PropertiesUtil.getIS().load(conf.getProperty("producer.conf")).getProp();
+		this.client.initConf(producer);
 		this.initPool();
 	}
 	@SuppressWarnings("rawtypes")
