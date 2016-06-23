@@ -6,7 +6,7 @@ import com.zhangyw.kafka.producer.exception.KPSException;
 
 public class KPServerTest {
 	public static void main(String[] args){
-		final KPServer server = new KPServer();
+		final KPServer server = new KPServer("D:/work/zhangyingwei.com/MyEclipseWS/kafka-producer/src/main/conf.properties");
 		new Thread(new Runnable() {
 			public void run() {
 				while(true){

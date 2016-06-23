@@ -1,10 +1,6 @@
 package com.zhangyw.kafka.producer.client;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
-
-import com.zhangyw.kafka.producer.utils.PropertiesUtil;
 
 import kafka.javaapi.producer.Producer;
 import kafka.producer.ProducerConfig;
